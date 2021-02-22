@@ -32,3 +32,5 @@ func _on_Area2D_area_entered(area):
 		var enemy = get_closest_enemy(area)
 		if enemy:
 			set_ball_direction((enemy.global_position - global_position).normalized())
+		else:
+			set_ball_direction(Vector2(rand_range(-1,1), rand_range(-1,1)).normalized())
