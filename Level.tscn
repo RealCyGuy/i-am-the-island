@@ -1,0 +1,128 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://water.png" type="Texture" id=2]
+[ext_resource path="res://Other/Spawner.gd" type="Script" id=3]
+[ext_resource path="res://Other/Score.gd" type="Script" id=4]
+[ext_resource path="res://Font/04B_19.tres" type="DynamicFont" id=5]
+[ext_resource path="res://Font/04B_19-sm.tres" type="DynamicFont" id=6]
+[ext_resource path="res://Other/Instructions.gd" type="Script" id=7]
+[ext_resource path="res://Font/04B_19-lg.tres" type="DynamicFont" id=8]
+[ext_resource path="res://Other/GameOver.gd" type="Script" id=9]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 128, 96 )
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground"]
+position = Vector2( 128, 96 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 256, 192 )
+
+[node name="Spawner" type="Node" parent="."]
+script = ExtResource( 3 )
+
+[node name="Spawn" type="Timer" parent="Spawner"]
+wait_time = 4.0
+autostart = true
+
+[node name="RampUpStart" type="Timer" parent="Spawner"]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[node name="RampUp" type="Timer" parent="Spawner"]
+wait_time = 3.0
+
+[node name="Text" type="Node2D" parent="."]
+position = Vector2( 96, 128 )
+z_index = 2
+
+[node name="Instructions" type="Label" parent="Text"]
+margin_right = 64.0
+margin_bottom = 48.0
+custom_fonts/font = ExtResource( 6 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Left click to shoot."
+align = 1
+valign = 1
+autowrap = true
+uppercase = true
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GameOver" type="Node2D" parent="Text"]
+position = Vector2( -96, -128 )
+script = ExtResource( 9 )
+
+[node name="GameOverText" type="Label" parent="Text/GameOver"]
+margin_left = 48.0
+margin_top = 72.0
+margin_right = 208.0
+margin_bottom = 120.0
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Game over!"
+align = 1
+valign = 1
+autowrap = true
+uppercase = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Restart" type="Button" parent="Text/GameOver"]
+margin_left = 64.0
+margin_top = 112.0
+margin_right = 128.0
+margin_bottom = 129.0
+custom_styles/focus = SubResource( 1 )
+custom_fonts/font = ExtResource( 6 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0.278431, 0.278431, 0.278431, 1 )
+custom_colors/font_color_pressed = Color( 0.886275, 0.886275, 0.886275, 1 )
+text = "Restart"
+flat = true
+
+[node name="Quit" type="Button" parent="Text/GameOver"]
+margin_left = 128.0
+margin_top = 112.0
+margin_right = 192.0
+margin_bottom = 129.0
+custom_styles/focus = SubResource( 1 )
+custom_fonts/font = ExtResource( 6 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0.278431, 0.278431, 0.278431, 1 )
+custom_colors/font_color_pressed = Color( 0.886275, 0.886275, 0.886275, 1 )
+text = "Quit"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Score" type="Label" parent="Text"]
+margin_left = 16.0
+margin_top = -112.0
+margin_right = 48.0
+margin_bottom = -95.0
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="timeout" from="Spawner/Spawn" to="Spawner" method="_on_Spawn_timeout"]
+[connection signal="timeout" from="Spawner/RampUpStart" to="Spawner" method="_on_RampUpStart_timeout"]
+[connection signal="timeout" from="Spawner/RampUp" to="Spawner" method="_on_RampUp_timeout"]
+[connection signal="pressed" from="Text/GameOver/Restart" to="Text/GameOver" method="_on_Restart_pressed"]
+[connection signal="pressed" from="Text/GameOver/Quit" to="Text/GameOver" method="_on_Quit_pressed"]
