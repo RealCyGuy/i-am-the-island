@@ -28,6 +28,7 @@ func get_closest_enemy(collider):
 
 func _on_Area2D_area_entered(area):
 	if "Enemy" in area.name:
+		$Hit.play()
 		var enemy = get_closest_enemy(area)
 		if enemy:
 			set_ball_direction((enemy.global_position - global_position).normalized())

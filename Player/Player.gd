@@ -25,6 +25,7 @@ func _input(event):
 				get_parent().add_child(bullet)
 				bullet.global_position = global_position
 				bullet.set_ball_direction(direction)
+				$Shoot.play()
 
 func _on_Player_area_entered(area):
 	if "Enemy" in area.name:
